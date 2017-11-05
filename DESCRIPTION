@@ -1,9 +1,17 @@
 Package: snippets
-Title: What the Package Does (one line, title case)
+Title: Snippets 
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.4.2)
+Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", "cre"))
+Description: Snippets GUI
+Depends: 
+    R (>= 3.4.2),
+    data.table,
+    magrittr,
+    stringr,
+    RMariaDB,
+    shinyAce,
+    shinymaterial,
+    data.table
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

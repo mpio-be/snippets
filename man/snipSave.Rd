@@ -9,11 +9,11 @@
 \usage{
 snipSave(snippet, lang, author = NA, description = NA, ID)
 
-snipFetch(ID)
+snipFetch(ID, verbose = FALSE, banner = TRUE)
 
 snipDrop(ID)
 
-snipSearch(kw)
+snipSearch(kw, lang)
 }
 \arguments{
 \item{snippet}{The snippet}

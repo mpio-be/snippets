@@ -1,20 +1,56 @@
-bootstrapPage(
 
-includeCSS("./www/styles.css"),
+material_page(title = 'snippets',nav_bar_color = 'blue-grey',
+  br(),
+  material_row( 
+    material_column(width = 2,
 
-
-aceEditor("sqlSnippets",height = '80vh', theme = 'merbivore' , mode = "mysql", wordWrap = TRUE ),
-
-
-absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE, draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto", width = 330, height = "auto",
-
-  textInput("snipSearch", "Search SQL snippets", value = 'system' ) ,
-
-  selectInput("snippetsFontSize", "Font size", 10:20, selected = 12 )
-
-  )
+    material_radio_button('MODE', '', choices = c('Search', 'Edit', 'New') ),   
+    hr(),
+    # ==========================================================================
+    # SEARCH
+    # ==========================================================================
+    conditionalPanel( condition = 'input.MODE == "Search"',
 
 
+      material_text_box('snipSearch', 'Search...'),
+      material_button('searchButton',  'Search snippets ...' ), 
 
-)
+      br(), br(),
+
+      material_dropdown('lang', 'Language', choices = c('r', 'mysql', 'sh') ,selected = 'r')
+
+      ),
+
+    # ==========================================================================
+    # SEARCH
+    # ==========================================================================
+    conditionalPanel( condition = 'input.MODE == "Edit"',
+
+      material_text_box('snipID', 'Type ID')
+
+ 
+      )
+
+
+
+
+
+    
+   ),
+
+  # ==========================================================================
+  # EDITORS
+  # ==========================================================================
+  material_column(width = 10,
+
+      conditionalPanel( condition = 'input.MODE == "Search"',
+      aceEditor('search',height = '90vh', theme='merbivore', wordWrap = TRUE )
+        )
+    )
+
+ ))
+
+
+
+
 

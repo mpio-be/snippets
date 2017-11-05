@@ -8,10 +8,10 @@
 # ALTER TABLE SNIPPETS.repo MODIFY COLUMN lang varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'R, SQL, python, bash' ;
 # ALTER TABLE SNIPPETS.repo 
 # COMMENT='R, SQL, python, bash, ... snippets repository ' ;
-
+# update SNIPPETS.repo set lang = 'mysql'
 
 CREATE TABLE repo (
-  ID          int(11)          NOT NULL AUTO_INCREMENT COMMENT 'query ID',
+  ID          int(11)      NOT NULL AUTO_INCREMENT COMMENT 'query ID',
   snippet     text,
   lang        varchar(10)  DEFAULT NULL COMMENT 'R, SQL, python, bash',
   author      varchar(50)  DEFAULT NULL COMMENT 'who saved the snippet',
@@ -19,12 +19,11 @@ CREATE TABLE repo (
   PRIMARY KEY (ID)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='R, SQL, python, bash, ... snippets repository '
 
-# Pwd - snipManager
+
 CREATE USER 'snipuser'@'localhost' ;
 UPDATE mysql.user SET Password=PASSWORD('resupins') WHERE User='snipuser' AND Host='localhost' ;
 GRANT Alter,Delete,Create view,Insert,Select,Show view,Trigger,Update,References  ON SNIPPETS.repo TO 'snipuser'@'localhost' ;
 FLUSH PRIVILEGES;
-
 
 # save to ~/.my.cnf
 [snippets]

@@ -52,15 +52,42 @@ snipSave <- function(snippet, lang, author = NA, description=NA, ID) {
 
 #' @rdname snipSave
 #' @export
-snipFetch        <- function(ID) {
-	IDs = paste(ID, collapse = ',')
+snipFetch   <- function(ID, verbose = FALSE, banner = TRUE) {
 	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
 
-	x = dbGetQuery(con, paste('SELECT * from repo where ID in (', IDs, ')') )
+	IDs = paste(ID, collapse = ',')
 
-	# TODO; format given language (include all fields)
 
-	x$snippet
+	x = dbGetQuery(con, paste('SELECT * from repo where ID in (', IDs, ')') ) %>%
+		data.table
+
+	# make banner function
+	f = function(ID, author, description) {
+		tb = paste(rep('-', 78), collapse = '') %>% 
+			 str_pad( width = 80,pad = '#',side = 'both')
+		id   = paste0('# ID     = ', ID)
+		auth = paste0('# author = ', author)
+		desc = str_wrap(description, 80, exdent = 2) %>%  
+		paste('#', .) %>%
+		str_replace_all(., '\n', '\n#')
+
+		o = paste(tb, id, auth, desc, tb, sep = '\n')
+		paste(o, collapse = "")
+		}	
+
+	if(banner){
+		x[, banner := f(ID, author, description), by = ID]
+		x[lang == 'mysql', banner  := paste('/*', banner, '*/', collapse = ''), by = ID]
+		x[, snippet := paste(banner, snippet, sep = '\n'), by = ID]
+    	}
+
+
+	o = paste(x$snippet, collapse = '\n\n')
+
+	if(verbose) 
+		cat(o)
+
+	o
 
 	}
 
@@ -68,7 +95,7 @@ snipFetch        <- function(ID) {
 
 #' @rdname snipSave
 #' @export
-snipDrop         <- function(ID) {
+snipDrop <- function(ID) {
 	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
 	
 	dbExecute(con, paste('DELETE FROM repo where ID = ', ID) )
@@ -78,16 +105,19 @@ snipDrop         <- function(ID) {
 
 #' @rdname snipSave
 #' @export
-snipSearch  <- function(kw) {
+snipSearch  <- function(kw, lang) {
 	
 	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
 
-	ids = dbGetQuery(con,
-		paste0('SELECT ID from repo
-			      WHERE snippet like "%', kw, '%" OR description like "%', kw, '%"') )$ID
-
-
-	snipFetch(ids)
+	if(missing(lang))
+		o = dbGetQuery(con,
+			paste0('SELECT ID from repo
+				      WHERE snippet like "%', kw, '%" OR description like "%', kw, '%"') )$ID
+	if(!missing(lang))
+		o = dbGetQuery(con,
+			paste0('SELECT ID from repo
+				      WHERE lang =',shQuote(lang),'AND (snippet like "%', kw, '%" OR description like "%', kw, '%")') )$ID
+	o
 
 	}
 
