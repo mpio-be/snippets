@@ -61,23 +61,10 @@ snipFetch   <- function(ID, verbose = FALSE, banner = TRUE) {
 	x = dbGetQuery(con, paste('SELECT * from repo where ID in (', IDs, ')') ) %>%
 		data.table
 
-	# make banner function
-	f = function(ID, author, description) {
-		tb = paste(rep('-', 78), collapse = '') %>% 
-			 str_pad( width = 80,pad = '#',side = 'both')
-		id   = paste0('# ID     = ', ID)
-		auth = paste0('# author = ', author)
-		desc = str_wrap(description, 80, exdent = 2) %>%  
-		paste('#', .) %>%
-		str_replace_all(., '\n', '\n#')
-
-		o = paste(tb, id, auth, desc, tb, sep = '\n')
-		paste(o, collapse = "")
-		}	
 
 	if(banner){
-		x[, banner := f(ID, author, description), by = ID]
-		x[lang == 'mysql', banner  := paste('/*', banner, '*/', collapse = ''), by = ID]
+		x[, banner := banner(ID, author, description), by = ID]
+		x[lang == 'mysql', banner  := banner(sql = TRUE), by = ID]
 		x[, snippet := paste(banner, snippet, sep = '\n'), by = ID]
     	}
 
