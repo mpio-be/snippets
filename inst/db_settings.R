@@ -19,6 +19,7 @@ FLUSH PRIVILEGES;
 # save to ~/.my.cnf
 [snippets]
 database=SNIPPETS
+host=scidb.mpio.orn.mpg.de
 user=snipuser
 password=resupins
 

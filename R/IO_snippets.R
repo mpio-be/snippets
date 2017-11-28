@@ -63,9 +63,11 @@ snipFetch   <- function(ID, verbose = FALSE, banner = TRUE) {
 
 
 	if(banner){
-		x[, banner := banner(ID, author, description), by = ID]
-		x[lang == 'mysql', banner  := banner(sql = TRUE), by = ID]
+		x[lang != 'mysql', banner := banner(ID, description)  , by = ID]
+		x[lang == 'mysql', banner  := banner(ID, description, sql = TRUE), by = ID]
+		
 		x[, snippet := paste(banner, snippet, sep = '\n'), by = ID]
+    	
     	}
 
 
