@@ -17,26 +17,25 @@ material_page(title = 'snippets',nav_bar_color = 'blue-grey',
 
       br(), br(),
 
-      material_dropdown('lang', 'Language', choices = c('r', 'mysql', 'sh') ,selected = 'r')
+      material_dropdown('lang', 'Language', 
+          choices = c('R' = 'r', 'SQL' = 'mysql', 'bash' = 'sh') ,selected = 'r')
 
       ),
 
     # ==========================================================================
-    # SEARCH
+    # EDIT
     # ==========================================================================
     conditionalPanel( condition = 'input.MODE == "Edit"',
 
-      material_text_box('snipID', 'Type ID')
+      material_text_box('snipID', 'Snippet ID'),
+      material_button('editButton',  'UPDATE' )
 
  
       )
 
-
-
-
-
     
    ),
+
 
   # ==========================================================================
   # EDITORS
@@ -44,8 +43,13 @@ material_page(title = 'snippets',nav_bar_color = 'blue-grey',
   material_column(width = 10,
 
       conditionalPanel( condition = 'input.MODE == "Search"',
-      aceEditor('search',height = '90vh', theme='merbivore', wordWrap = TRUE )
-        )
+      aceEditor('search',height = '90vh', theme='merbivore', wordWrap = TRUE ) ),
+    
+      conditionalPanel( condition = 'input.MODE == "Edit"',
+      aceEditor('edit',height = '90vh', theme='pastel_on_dark', wordWrap = TRUE ) )
+    
+
+
     )
 
  ))

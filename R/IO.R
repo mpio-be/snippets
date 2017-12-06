@@ -52,29 +52,30 @@ snipSave <- function(snippet, lang, author = NA, description=NA, ID) {
 
 #' @rdname snipSave
 #' @export
-snipFetch   <- function(ID, verbose = FALSE, banner = TRUE) {
+snipFetch   <- function(ID, verbose = FALSE, banner = TRUE, asis = FALSE) {
 	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
 
 	IDs = paste(ID, collapse = ',')
 
-
 	x = dbGetQuery(con, paste('SELECT * from repo where ID in (', IDs, ')') ) %>%
 		data.table
-
+    x[, lastGoodRun := as.character(lastGoodRun)]	
+    x[is.na(lastGoodRun), lastGoodRun := 'never']	
 
 	if(banner){
-		x[lang != 'mysql', banner := banner(ID, description)  , by = ID]
-		x[lang == 'mysql', banner  := banner(ID, description, sql = TRUE), by = ID]
-		
+		x[, banner := '']
+		x[lang != 'mysql', banner  := banner(c('ID', 'Author', 'Last good run',''), c(ID, author, lastGoodRun, description) )   , by = ID]
+		x[lang == 'mysql', banner  := banner(c('ID','Author', 'Last good run', ''), c(ID, author, lastGoodRun, description) , sql = TRUE), by = ID]
 		x[, snippet := paste(banner, snippet, sep = '\n'), by = ID]
     	
     	}
-
 
 	o = paste(x$snippet, collapse = '\n\n')
 
 	if(verbose) 
 		cat(o)
+	
+	if(asis) o = x
 
 	o
 
