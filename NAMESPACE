@@ -3,6 +3,8 @@
 export(banner)
 export(shQuote2)
 export(snipDrop)
+export(snipExists)
 export(snipFetch)
 export(snipSave)
 export(snipSearch)
+export(snipUpdate)

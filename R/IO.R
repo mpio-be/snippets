@@ -10,15 +10,14 @@
 #' @param description  description
 #' @param ID           snip ID - will overwrite that ID
 #'
-#' @return             snipSave returns the ID of the saved snippet 
+#' @return             snipSave & snipUpdate returns the ID of the saved snippet 
 #' 					   or NULL if this fails.
 #' @export
 #'
-snipSave <- function(snippet, lang, author = NA, description=NA, ID) {
+snipSave <- function(snippet, lang, author = NA, description=NA) {
 
 	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
 
-	if(missing(ID)) # then INSERT
 	v = paste("INSERT INTO repo (
 				snippet, 
 				lang,
@@ -31,24 +30,58 @@ snipSave <- function(snippet, lang, author = NA, description=NA, ID) {
 				shQuote2(description), 
 		sep = ",")   ,");")
 
-    if(!missing(ID)) { # then UPDATE
-     id_exists = nrow(dbGetQuery(con, paste('SELECT ID from repo where ID = ', ID) )) == 1
-     if(!id_exists) stop( paste('ID', ID, 'does not exist!'))
-    
-    v = paste('UPDATE repo SET', 
-    		  'snippet=',     shQuote2(snippet)   ,',',
-    		  'lang=',        shQuote2(lang)      ,',',
-			  'author=',      shQuote2(author)    ,',', 
-			  'description=', shQuote2(description), 
-			  'WHERE ID = ' , ID
-			 )
-	 } 
 
 	o = dbExecute(con, v)
 	if(o == 1)
 	dbGetQuery(con, 'SELECT max(ID) id from repo')%>%as.numeric else NULL
 
  }
+
+
+#' @rdname snipSave
+#' @export
+snipExists <- function(ID) {
+
+	if(is.null(ID) || is.na(ID) || is.na(as.integer(ID)) || length(ID) == 0 || nchar(ID) == 0 || ID %in% c(Inf, -Inf) || missing(ID)) ID = 0
+
+	ID = as.integer(ID)
+
+	if(as.integer(ID) > 0) {
+	 con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	 
+	 o = nrow(dbGetQuery(con, paste('SELECT ID from repo where ID = ', ID) )) == 1
+		
+	} else o = FALSE
+
+	return(o)
+
+ }
+
+
+
+#' @rdname snipSave
+#' @export
+snipUpdate <- function(ID, snippet, description) {
+
+	if( snipExists(ID) ) {
+		con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+
+
+		v = paste('UPDATE repo SET', 
+		'snippet=',     shQuote2(snippet)   ,',',
+		'description=', shQuote2(description), 
+		'WHERE ID = ' , ID
+		)
+
+
+		o = dbExecute(con, v)
+
+		if(o == 1)
+		return(ID) else return(NULL)
+	 }
+
+ }
+
 
 #' @rdname snipSave
 #' @export

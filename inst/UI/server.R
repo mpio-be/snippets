@@ -10,25 +10,33 @@ shinyServer(function(input, output, session) {
         
         if(length(ids) > 0) {
           o = snipFetch(ids)
-          updateAceEditor(session, "search", value = o, mode = input$lang  )
+          updateAceEditor(session, "search", value = o, mode = input$lang, fontSize = 14 )
+          }
 
-        }
+        if(length(ids) == 0) {
+          updateAceEditor(session, "search", value = paste('No search results\n', Sys.time() ), mode = 'txt', fontSize = 20  )
+          }
+
+
+
 
     })
 
    # EDIT
     observeEvent(input$snipID, {
 
-      id = as.integer(input$snipID)
-      if(is.na(id)) id = 0
-
-      o = snipFetch(id, asis  = TRUE, banner = FALSE)
+      ok = snipExists(input$snipID)
       
-      if(nrow(o) > 0)
-      updateAceEditor(session, "edit", value = o$snippet, mode = o$lang  )           
+      if(ok) {
+        o = snipFetch(input$snipID, banner = FALSE, asis = TRUE)  
+        updateAceEditor(session, "editSnip",     value = o$snippet,     mode = o$lang, fontSize = 14)           
+        updateAceEditor(session, "editDescribe", value = o$description, mode = 'txt',  fontSize = 14)           
+        }
 
-       if(nrow(o) == 0)
-      updateAceEditor(session, "edit", value = "ID does not exist.", mode = 'txt' ) 
+      if(!ok) {
+        updateAceEditor(session, "editDescribe", value = paste('ID does not exist\n', Sys.time() ), mode = 'txt', , fontSize = 20  )           
+        updateAceEditor(session, "editSnip",     value = "", mode = 'txt', , fontSize = 20 ) 
+      }
 
         
     })
@@ -36,7 +44,16 @@ shinyServer(function(input, output, session) {
 
 
    observeEvent(input$editButton, {
-  
+    
+    ok = snipExists(input$snipID)
+
+    if(ok) {
+      o = snipUpdate(input$snipID, input$editSnip, input$editDescribe )
+      toastr_success( paste('Snippet', o, 'was updated.') )
+      }
+
+
+
     })
 
 

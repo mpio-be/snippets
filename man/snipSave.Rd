@@ -2,12 +2,18 @@
 % Please edit documentation in R/IO.R
 \name{snipSave}
 \alias{snipSave}
+\alias{snipExists}
+\alias{snipUpdate}
 \alias{snipFetch}
 \alias{snipDrop}
 \alias{snipSearch}
 \title{SQL Snippets}
 \usage{
-snipSave(snippet, lang, author = NA, description = NA, ID)
+snipSave(snippet, lang, author = NA, description = NA)
+
+snipExists(ID)
+
+snipUpdate(ID, snippet, description)
 
 snipFetch(ID, verbose = FALSE, banner = TRUE, asis = FALSE)
 
@@ -27,7 +33,7 @@ snipSearch(kw, lang)
 \item{ID}{snip ID - will overwrite that ID}
 }
 \value{
-snipSave returns the ID of the saved snippet 
+snipSave & snipUpdate returns the ID of the saved snippet 
 					   or NULL if this fails.
 }
 \description{

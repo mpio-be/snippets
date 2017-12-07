@@ -2,8 +2,7 @@
 
 # settings
 require(snippets)
-require(shiny)
-require(shinymaterial)
+
 
 
 

@@ -1,6 +1,6 @@
 Package: snippets
 Title: Snippets 
-Version: 20017.0.1
+Version: 2017.0.2
 Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", "cre"))
 Description: Snippets GUI
 Depends: 
@@ -11,6 +11,8 @@ Depends:
     RMariaDB,
     shinyAce,
     shinymaterial,
+    shinytoastr,
+    shinyjs,
     data.table
 License: What license is it under?
 Encoding: UTF-8
