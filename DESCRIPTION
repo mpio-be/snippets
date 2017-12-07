@@ -10,7 +10,7 @@ Depends:
     stringr,
     RMariaDB,
     shinyAce,
-    shinymaterial,
+    shinydashboard,
     shinytoastr,
     shinyjs,
     data.table

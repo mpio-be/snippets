@@ -23,38 +23,44 @@ shinyServer(function(input, output, session) {
     })
 
    # EDIT
-    observeEvent(input$snipID, {
+    observeEvent(input$snipID, ignoreInit = TRUE , {
 
       ok = snipExists(input$snipID)
       
       if(ok) {
         o = snipFetch(input$snipID, banner = FALSE, asis = TRUE)  
-        updateAceEditor(session, "editSnip",     value = o$snippet,     mode = o$lang, fontSize = 14)           
-        updateAceEditor(session, "editDescribe", value = o$description, mode = 'txt',  fontSize = 14)           
+        updateAceEditor(session= session, "editSnip",value = o$snippet,  mode = o$lang, fontSize = 14)
+      
+        updateTextAreaInput(session= session, "editDescribe", value = o$description) 
+
         }
 
-      if(!ok) {
-        updateAceEditor(session, "editDescribe", value = paste('ID does not exist\n', Sys.time() ), mode = 'txt', , fontSize = 20  )           
-        updateAceEditor(session, "editSnip",     value = "", mode = 'txt', , fontSize = 20 ) 
-      }
 
-        
-    })
+      if(!ok & input$snipID != 0) 
+        toastr_warning( paste('Snippet',input$snipID, 'does not exist.') )
 
 
+     })
 
-   observeEvent(input$editButton, {
+
+
+   observeEvent(input$editButton, ignoreInit = TRUE, {
     
     ok = snipExists(input$snipID)
 
     if(ok) {
       o = snipUpdate(input$snipID, input$editSnip, input$editDescribe )
       toastr_success( paste('Snippet', o, 'was updated.') )
-      }
 
+       }
 
+    # reset   
+    updateNumericInput(session = session, inputId = 'snipID', value = 0)  
+              
 
     })
+
+
 
 
 
