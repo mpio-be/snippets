@@ -40,13 +40,31 @@ dashboardPage(
         numericInput('snipID', 'Snippet ID', value = 0),
         actionButton('editButton',  'UPDATE' ), 
         textAreaInput('editDescribe','Edit description') 
+        ),
+
+
+    # ==========================================================================
+    # NEW
+    # ==========================================================================
+      conditionalPanel( condition = 'input.MODE == "New"',
+
+        actionButton('saveButton',  'SAVE' ), 
+        textAreaInput('saveDescribe','Snippet description'),
+        textAreaInput('editDescribe','Edit description')
         )
+
+
+
+
+
+
+
     
     ), 
 
     
     # ==========================================================================
-    # EDITORS
+    # ACE EDITORS
     # ==========================================================================
     dashboardBody(
 
