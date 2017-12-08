@@ -48,14 +48,17 @@ dashboardPage(
     # ==========================================================================
       conditionalPanel( condition = 'input.MODE == "New"',
 
-        actionButton('saveButton',  'SAVE' ), 
-        textAreaInput('saveDescribe','Snippet description'),
-        textAreaInput('editDescribe','Edit description')
-        )
+        actionButton('saveNewButton',  'SAVE' ), 
+        textAreaInput('newDescribe','Snippet description:', placeholder = 'Script short description ...'),
+        textInput('newAuthor','Author\'s name:', placeholder = 'Name or initials')
+        ) ,
 
 
 
+     # INFO
+      hr(), 
 
+      htmlOutput("n_snippets") 
 
 
 
@@ -72,9 +75,14 @@ dashboardPage(
           aceEditor('search',height = '90vh', theme='merbivore', wordWrap = TRUE, fontSize = 14) ),
       
         conditionalPanel( condition = 'input.MODE == "Edit"',
-           aceEditor('editSnip',    height = '90vh', theme='pastel_on_dark', wordWrap = TRUE,fontSize = 14 ) 
+           aceEditor('editSnip',    height = '90vh', theme='pastel_on_dark', wordWrap = TRUE,fontSize = 14 ) ), 
 
-          )
+        conditionalPanel( condition = 'input.MODE == "New"',
+           aceEditor('newSnip',    height = '90vh', theme='clouds', wordWrap = TRUE,fontSize = 14 ) )
+
+
+
+
       
 
 
