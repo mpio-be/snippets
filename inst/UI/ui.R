@@ -20,6 +20,7 @@ dashboardPage(
 
       conditionalPanel( condition = 'input.MODE == "Browse" | input.MODE == "Edit"',
           numericInput('snipID', 'Snippet ID', value = 0),
+          htmlOutput("last_run"),
           textAreaInput('editDescribe','Description', placeholder = 'Snippet\'s description ...') 
 
         ),

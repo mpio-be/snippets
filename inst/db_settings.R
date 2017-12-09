@@ -13,7 +13,7 @@ CREATE TABLE repo (
 
 CREATE USER 'snipuser'@'%' ;
 UPDATE mysql.user SET Password=PASSWORD('resupins') WHERE User='snipuser' AND Host='%' ;
-GRANT Alter,Delete,Create view,Insert,Select,Show view,Trigger,Update,References  ON SNIPPETS.repo TO 'snipuser'@'%' ;
+GRANT Alter,Delete,Create, Drop, Create view,Insert,Select,Show view,Trigger,Update,References  ON SNIPPETS.* TO 'snipuser'@'%' ;
 FLUSH PRIVILEGES;
 
 # save to ~/.my.cnf
@@ -23,4 +23,6 @@ host=scidb.mpio.orn.mpg.de
 user=snipuser
 password=resupins
 
+
+# install run_snippets() on cron
 

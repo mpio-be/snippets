@@ -7,7 +7,7 @@
 clean_repo()
 }
 \value{
-N lines updated in repo table
+numeric: N lines updated in repo table
 }
 \description{
 remove empty lines

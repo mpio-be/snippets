@@ -19,7 +19,7 @@ shinyServer(function(input, output, session) {
 
       })
 
-   # EDIT
+   # EDIT & BROWSE
       observeEvent(input$snipID, ignoreInit = TRUE , {
 
         ok <- snipExists(input$snipID)
@@ -29,6 +29,13 @@ shinyServer(function(input, output, session) {
           updateAceEditor(session= session, "editSnip",value = o$snippet,  mode = o$lang, fontSize = 14)
         
           updateTextAreaInput(session= session, "editDescribe", value = o$description) 
+
+         # last update 
+         output$last_run <- renderUI({
+            hr()
+            div(class='text-center font-weight-bold', div(class = 'badge label-info', paste('Last run:', o$lastGoodRun ) ) )
+            })
+
 
           }
 
@@ -54,7 +61,7 @@ shinyServer(function(input, output, session) {
       # reset   
       updateNumericInput(session = session, inputId = 'snipID', value = 0)  
                 
-
+      
       })
 
    # NEW
@@ -100,7 +107,7 @@ shinyServer(function(input, output, session) {
         x = dbGetQuery(con, 'SELECT count(*) snippets, lang from repo group by lang') %>% data.table
         dbDisconnect(con)
 
-        o = x[, as.character(div(class='text-center font-weight-bold', div(class = 'badge label-warning', paste(lang, '▶', snippets, 'snippets') ) )) , 1:nrow(x) ]
+        o = x[, as.character(div(class='text-center font-weight-bold', div(class = 'badge label-warning', paste(lang, ' ▶ ', snippets, 'snippets') ) )) , 1:nrow(x) ]
 
         
         HTML(paste(o$V1, collapse = ''))

@@ -1,6 +1,6 @@
 Package: snippets
 Title: Snippets 
-Version: 2017.0.3
+Version: 2017.0.4
 Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", "cre"))
 Description: Snippets GUI
 Depends: 

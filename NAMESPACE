@@ -2,6 +2,8 @@
 
 export(banner)
 export(clean_repo)
+export(runSnippet)
+export(run_snippets)
 export(shQuote2)
 export(snipDrop)
 export(snipExists)
