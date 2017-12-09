@@ -60,7 +60,7 @@ shinyServer(function(input, output, session) {
    # NEW
      observeEvent(input$saveNewButton, ignoreInit = TRUE, {
       
-      last_new <<- snipSave(input$newSnip,input$lang,input$newAuthor, input$newDescribe )
+      last_new = snipSave(input$newSnip,input$lang,input$newAuthor, input$newDescribe )
       toastr_success( paste('Snippet', last_new, 'was saved.') )
 
 
@@ -69,32 +69,49 @@ shinyServer(function(input, output, session) {
       updateTextInput(session = session, inputId = 'newAuthor', value = "")  
       
 
-      # info
+      # Last saved ID
       output$n_snippets <- renderUI({
-        div(class='text-center font-weight-bold', 
-          div(class = 'badge label-danger', paste('Last saved ID:', last_new ) ) )
+        hr()
+        div(class='text-center font-weight-bold', div(class = 'badge label-danger', paste('Last saved ID:', last_new ) ) )
         })
-
-
 
       })     
 
    # CLEAN
-    autoInvalidate <- reactiveTimer(5000)
+    invalidate_cleaner <- reactiveTimer(5000)
     
     observe({
-      autoInvalidate()
+      invalidate_cleaner()
       gosts = clean_repo()
       if(gosts == 1)
-        toastr_info( paste(gosts, 'empty snippet removed from repository.') )  
+        toastr_info( paste(gosts, 'empty snippet removed from repository.') , showDuration = 5000)  
       if(gosts > 1)
-        toastr_info( paste(gosts, 'empty snippets removed from repository.') )  
-
-
+        toastr_info( paste(gosts, 'empty snippets removed from repository.'), showDuration = 5000 )  
       })
 
+    # LAST UPDATE SNIPPET AND INFO
+      invalidate_repo_state <- reactiveTimer(5000)
+      
+      observe({
+      invalidate_repo_state()
+      output$repo_state <- renderUI({
+        
+        con = dbConnect(RMariaDB::MariaDB(), group = "snippets")
+        x = dbGetQuery(con, 'SELECT count(*) snippets, lang from repo group by lang') %>% data.table
+        dbDisconnect(con)
 
- })
+        o = x[, as.character(div(class='text-center font-weight-bold', div(class = 'badge label-warning', paste(lang, '▶', snippets, 'snippets') ) )) , 1:nrow(x) ]
+
+        
+        HTML(paste(o$V1, collapse = ''))
+
+      })
+     })
+      
+
+})   
+
+
 
 
 

@@ -5,7 +5,7 @@ dashboardPage(
   dashboardSidebar( 
   useToastr(),
 
-    radioButtons('MODE', '', choices = c('Search', 'Edit', 'New'), inline = TRUE ),   
+    radioButtons('MODE', '', choices = c('Search','Browse', 'Edit', 'New'), inline = FALSE ), 
     hr(),
     
     # ==========================================================================
@@ -17,6 +17,14 @@ dashboardPage(
         choices = c('R' = 'r', 'SQL' = 'mysql', 'bash' = 'sh') ,selected = 'r')
 
         ),
+
+      conditionalPanel( condition = 'input.MODE == "Browse" | input.MODE == "Edit"',
+          numericInput('snipID', 'Snippet ID', value = 0),
+          textAreaInput('editDescribe','Description', placeholder = 'Snippet\'s description ...') 
+
+        ),
+
+
 
     # ==========================================================================
     # SEARCH
@@ -32,14 +40,16 @@ dashboardPage(
 
         ),
 
+
     # ==========================================================================
     # EDIT
     # ==========================================================================
       conditionalPanel( condition = 'input.MODE == "Edit"',
 
-        numericInput('snipID', 'Snippet ID', value = 0),
-        actionButton('editButton',  'UPDATE' ), 
-        textAreaInput('editDescribe','Edit description') 
+        div(class='text-center text-primary', 'To remove a snippet delete both the Description and the Snippet and press Update'), 
+
+        actionButton('editButton',  'UPDATE' )
+        
         ),
 
 
@@ -54,11 +64,10 @@ dashboardPage(
         ) ,
 
 
-
      # INFO
-      hr(), 
-
-      htmlOutput("n_snippets") 
+      htmlOutput("n_snippets"), 
+      hr(),
+      htmlOutput("repo_state") 
 
 
 
@@ -74,7 +83,7 @@ dashboardPage(
         conditionalPanel( condition = 'input.MODE == "Search"',
           aceEditor('search',height = '90vh', theme='merbivore', wordWrap = TRUE, fontSize = 14) ),
       
-        conditionalPanel( condition = 'input.MODE == "Edit"',
+        conditionalPanel( condition = 'input.MODE == "Edit" | input.MODE == "Browse"',
            aceEditor('editSnip',    height = '90vh', theme='pastel_on_dark', wordWrap = TRUE,fontSize = 14 ) ), 
 
         conditionalPanel( condition = 'input.MODE == "New"',
