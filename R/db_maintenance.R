@@ -32,7 +32,7 @@ runSnippet <- function(snippet, lang) {
     }
 
 
-    if(class(o) == 'try-error') ans = as.POSIXct(NA) else ans = Sys.time()
+    if( inherits(o, 'try-error') ) ans = as.POSIXct(NA) else ans = Sys.time()
 
     ans
   }
