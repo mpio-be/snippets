@@ -18,21 +18,19 @@ clean_repo <- function() {
 #' @export
 #' @examples
 #' runSnippet(snippet = 'x = rnorm(10)', lang = 'r')
-#' runSnippet(snippet = 'SELECT 1', lang = 'mysql')
-runSnippet <- function(snippet, lang) {
+#' runSnippet(snippet = 'SET @a = NOW(); SELECT @a as time', lang = 'mysql')
+runSnippet <- function(snippet, lang, mysql = 'mysql --defaults-file=~/.valcu.cnf') {
 
     if(lang == 'r') {
       o = try(eval(parse(text=snippet)), silent = TRUE)
+      if( inherits(o, 'try-error') ) ans = as.POSIXct(NA) else ans = Sys.time()
     }
-
 
     if(lang == 'mysql') {
-      con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))  
-      o = try( dbExecute(con, snippet), silent = TRUE)
+     cmd = paste(mysql, "-e", shQuote( paste(snippet, ';')) ) 
+     x = system(cmd, intern = TRUE)
+     if( !is.null(attributes(x) ) ) ans = as.POSIXct(NA) else ans = Sys.time()
     }
-
-
-    if( inherits(o, 'try-error') ) ans = as.POSIXct(NA) else ans = Sys.time()
 
     ans
   }

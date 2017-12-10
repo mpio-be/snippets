@@ -14,8 +14,6 @@ CREATE TABLE repo (
 CREATE USER 'snipuser'@'%' ;
 UPDATE mysql.user SET Password=PASSWORD('*******') WHERE User='snipuser' AND Host='%' ;
 GRANT Alter,Delete,Create, Drop, Create view,Insert,Select,Show view,Trigger,Update,References  ON SNIPPETS.* TO 'snipuser'@'%' ;
-GRANT Select, Execute ON *.* TO 'snipuser'@'%' ;
-
 FLUSH PRIVILEGES;
 
 # save to ~/.my.cnf

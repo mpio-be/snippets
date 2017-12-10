@@ -4,7 +4,7 @@
 \alias{runSnippet}
 \title{check one snippet}
 \usage{
-runSnippet(snippet, lang)
+runSnippet(snippet, lang, mysql = "mysql --defaults-file=~/.valcu.cnf")
 }
 \value{
 datetime if the snippet runs without errors else NA
@@ -14,5 +14,5 @@ check one snippet
 }
 \examples{
 runSnippet(snippet = 'x = rnorm(10)', lang = 'r')
-runSnippet(snippet = 'SELECT 1', lang = 'mysql')
+runSnippet(snippet = 'SET @a = NOW(); SELECT @a as time', lang = 'mysql')
 }
