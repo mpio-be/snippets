@@ -16,13 +16,7 @@ UPDATE mysql.user SET Password=PASSWORD('*******') WHERE User='snipuser' AND Hos
 GRANT Alter,Delete,Create, Drop, Create view,Insert,Select,Show view,Trigger,Update,References  ON SNIPPETS.* TO 'snipuser'@'%' ;
 FLUSH PRIVILEGES;
 
-# save to ~/.my.cnf
-[snippets]
-database=SNIPPETS
-host=scidb.mpio.orn.mpg.de
-user=snipuser
-password=*******
-
+# .my.cnf is defined (see scidbadmin)
 
 # install run_snippets() on cron (see scidbadmin)
 
