@@ -1,2 +1,2 @@
 
-`snipets` is part of [sdb](https://github.com/mpio-be/sdb).
+`snipets` extends [sdb](https://github.com/mpio-be/sdb).
