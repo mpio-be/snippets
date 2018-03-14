@@ -17,6 +17,5 @@ GRANT Alter,Delete,Create, Drop, Create view,Insert,Select,Show view,Trigger,Upd
 FLUSH PRIVILEGES;
 
 # .my.cnf is defined (see scidbadmin)
-
 # install run_snippets() on cron (see scidbadmin)
 
