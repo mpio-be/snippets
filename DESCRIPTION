@@ -5,6 +5,7 @@ Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", 
 Description: Snippets GUI
 Depends: 
     R (>= 3.4.2),
+    sdb,
     data.table,
     magrittr,
     stringr,
@@ -12,8 +13,9 @@ Depends:
     shinyAce,
     shinydashboard,
     shinytoastr,
-    shinyjs,
-    data.table
+    shinyjs
+Remotes:
+    mpio-be/sdb    
 License: GPL > 2
 Encoding: UTF-8
 LazyData: true
