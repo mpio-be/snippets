@@ -44,7 +44,7 @@ runSnippet <- function(snippet, lang, mysql = 'mysql --defaults-file=~/.my.cnf')
 #'
 run_snippets <- function() {
 
-    con = dbConnect(RMariaDB::MariaDB() ); on.exit(dbDisconnect(con))
+    con = dbConnect(RMariaDB::MariaDB() , db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 
     x = dbGetQuery(con, 'SELECT * from repo where lang in ("mysql", "r")') %>% data.table
 
