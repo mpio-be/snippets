@@ -19,7 +19,7 @@ clean_repo <- function() {
 #' @examples
 #' runSnippet(snippet = 'x = rnorm(10)', lang = 'r')
 #' runSnippet(snippet = 'SET @a = NOW(); SELECT @a as time', lang = 'mysql')
-runSnippet <- function(snippet, lang, mysql = 'mysql --defaults-file=~/.valcu.cnf') {
+runSnippet <- function(snippet, lang, mysql = 'mysql --defaults-file=~/.my.cnf') {
 
     if(lang == 'r') {
       o = try(eval(parse(text=snippet)), silent = TRUE)
@@ -44,7 +44,7 @@ runSnippet <- function(snippet, lang, mysql = 'mysql --defaults-file=~/.valcu.cn
 #'
 run_snippets <- function() {
 
-    con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+    con = dbConnect(RMariaDB::MariaDB() ); on.exit(dbDisconnect(con))
 
     x = dbGetQuery(con, 'SELECT * from repo where lang in ("mysql", "r")') %>% data.table
 
