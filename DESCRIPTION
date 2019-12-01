@@ -4,7 +4,7 @@ Version: 2019.0.1
 Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", "cre"))
 Description: Snippets GUI
 Depends: 
-    R (>= 3.4.2),
+    R (>= 3.6.0),
     sdb,
     data.table,
     magrittr,
