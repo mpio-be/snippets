@@ -51,7 +51,7 @@ run_snippets <- function() {
     x[, lastGoodRun := runSnippet(snippet, lang), by = ID]
 
 
-    dbWriteTable(con, 'temp', x[!is.na(lastGoodRun), .(ID, lastGoodRun)], row.names = FALSE)
+    dbWriteTable(con, 'temp', x[, .(ID, lastGoodRun)], row.names = FALSE)
 
     o = dbExecute(con, 'UPDATE repo r, temp t set r.lastGoodRun = t.lastGoodRun where t.ID = r.ID')
     dbExecute(con, 'DROP TABLE temp')
