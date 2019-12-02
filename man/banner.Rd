@@ -6,6 +6,9 @@
 \usage{
 banner(nams, values, len = 80, sql = FALSE)
 }
+\description{
+banner
+}
 \examples{
 values = c('1', 'Aname Bname', paste(sample(iris$Species, 20), collapse = ' ' ) )
 nams = c('ID', 'Name', NA)

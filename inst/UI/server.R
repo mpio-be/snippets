@@ -103,7 +103,7 @@ shinyServer(function(input, output, session) {
       invalidate_repo_state()
       output$repo_state <- renderUI({
         
-        con = dbConnect(RMariaDB::MariaDB(), group = "snippets")
+        con = dbConnect(RMariaDB::MariaDB(), db = "SNIPPETS")
         x = dbGetQuery(con, 'SELECT count(*) snippets, lang from repo group by lang') %>% data.table
         dbDisconnect(con)
 

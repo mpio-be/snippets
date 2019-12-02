@@ -16,7 +16,7 @@
 #'
 snipSave <- function(snippet, lang, author = NA, description=NA) {
 
-	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 
 	v = paste("INSERT INTO repo (
 				snippet, 
@@ -47,7 +47,7 @@ snipExists <- function(ID) {
 	ID = as.integer(ID)
 
 	if(as.integer(ID) > 0) {
-	 con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	 con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 	 
 	 o = nrow(dbGetQuery(con, paste('SELECT ID from repo where ID = ', ID) )) == 1
 		
@@ -64,7 +64,7 @@ snipExists <- function(ID) {
 snipUpdate <- function(ID, snippet, description) {
 
 	if( snipExists(ID) ) {
-		con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+		con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 
 
 		v = paste('UPDATE repo SET', 
@@ -86,7 +86,7 @@ snipUpdate <- function(ID, snippet, description) {
 #' @rdname snipSave
 #' @export
 snipFetch   <- function(ID, verbose = FALSE, banner = TRUE, asis = FALSE) {
-	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 
 	IDs = paste(ID, collapse = ',')
 
@@ -119,7 +119,7 @@ snipFetch   <- function(ID, verbose = FALSE, banner = TRUE, asis = FALSE) {
 #' @rdname snipSave
 #' @export
 snipDrop <- function(ID) {
-	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 	
 	dbExecute(con, paste('DELETE FROM repo where ID = ', ID) )
 
@@ -130,7 +130,7 @@ snipDrop <- function(ID) {
 #' @export
 snipSearch  <- function(kw, lang) {
 	
-	con = dbConnect(RMariaDB::MariaDB(), group = "snippets"); on.exit(dbDisconnect(con))
+	con = dbConnect(RMariaDB::MariaDB(), db = 'SNIPPETS'); on.exit(dbDisconnect(con))
 
 	if(missing(lang))
 		o = dbGetQuery(con,
