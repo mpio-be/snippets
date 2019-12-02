@@ -48,7 +48,7 @@ run_snippets <- function() {
 
     x = dbGetQuery(con, 'SELECT * from repo where lang in ("mysql", "r")') %>% data.table
 
-    x[, lastGoodRun := runSnippet(snippet, lang), by = ID]
+    x[, lastGoodRun := { print(ID); runSnippet(snippet, lang) }  , by = ID]
 
 
     dbWriteTable(con, 'temp', x[, .(ID, lastGoodRun)], row.names = FALSE)
