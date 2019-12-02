@@ -5,7 +5,6 @@ Authors@R: person("Mihai", "Valcu", email = "valcu@orn.mpg.de", role = c("aut", 
 Description: Snippets GUI
 Depends: 
     R (>= 3.6.0),
-    sdb,
     data.table,
     magrittr,
     stringr,
